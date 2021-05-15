@@ -29,6 +29,7 @@ module.exports = {
     hot: true,
     port: 8080,
   },
+  devtool: "source-map",
   module: {
     rules: [
       // CSS, PostCSS, Sass
@@ -43,9 +44,14 @@ module.exports = {
       },
       // JavaScript
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
+        include: path.resolve(__dirname, "src"),
+        loader: "babel-loader",
         exclude: /node_modules/,
-        use: ["babel-loader"],
+        options: {
+          presets: ["@babel/preset-env", "@babel/preset-react"],
+          plugins: ["@babel/transform-runtime"],
+        },
       },
     ],
   },

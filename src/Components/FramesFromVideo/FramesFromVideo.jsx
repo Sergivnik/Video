@@ -1,14 +1,17 @@
-import React, { useRef } from "react";
+import React from "react";
 
-export const SomeComponent = (props) => {
-  const vidRef = useRef(null);
+export const FramesFromVideo = (props) => {
   const handleLoadedmetadata = async (e) => {
     console.log(e.target.duration);
     let video = e.target;
     video.volume = 0;
     let div = document.getElementById("canvasDiv");
     let canvas;
-    for (let i = 0; i <= video.duration; i = i + video.duration / 5) {
+    for (
+      let i = video.duration / 100;
+      i <= video.duration;
+      i = i + (video.duration * 0.98) / 5
+    ) {
       canvas = document.createElement("canvas");
       canvas.width = "350";
       canvas.height = "250";
@@ -16,18 +19,17 @@ export const SomeComponent = (props) => {
       let ctx = canvas.getContext("2d");
       video.currentTime = i;
       await video.play();
-      ctx.drawImage(video, 0, 0);
+      ctx.drawImage(video, 0, 0, 450, 250);
     }
+    video.volume = 1;
   };
   return (
     <div>
       <video
-        ref={vidRef}
-        //src="https://d2xzmw6cctk25h.cloudfront.net/record/113845/attachment/65ae3d0987c9d31d1d8286e1bf526b37.mp4"
-        src="http://techslides.com/demos/sample-videos/small.mp4"
+        src={props.src}
         controls={true}
-        width="350"
-        height="250"
+        width="600"
+        height="350"
         onLoadedMetadata={handleLoadedmetadata}
       ></video>
       <div id="canvasDiv"></div>
