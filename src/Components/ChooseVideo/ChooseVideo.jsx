@@ -25,7 +25,6 @@ export const ChooseVideo = () => {
           type="radio"
           onInput={handleOptions}
           value="6 frames"
-          checked
         />
         <label htmlFor="contactChoice2">5 sec</label>
         <input

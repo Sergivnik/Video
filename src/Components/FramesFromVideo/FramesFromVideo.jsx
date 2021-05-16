@@ -8,6 +8,7 @@ export const FramesFromVideo = (props) => {
     let video = e.target;
     video.volume = 0;
     let div = document.getElementById("canvasDiv");
+    div.innerHTML = "";
     let width = video.clientWidth;
     div.style.width = width + "px";
     let canvas;
