@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export const FramesFromVideo = (props) => {
+  const [src, setSrc] = useState(null);
   const handleLoadedmetadata = async (e) => {
     console.log(e.target.duration);
     let video = e.target;
@@ -23,10 +24,17 @@ export const FramesFromVideo = (props) => {
     }
     video.volume = 1;
   };
+  useEffect(() => {
+    if (props.blob != null) {
+      let src = URL.createObjectURL(props.blob);
+      setSrc(src);
+    }
+  },[props]);
+
   return (
     <div>
       <video
-        src={props.src}
+        src={src}
         controls={true}
         width="600"
         height="350"
