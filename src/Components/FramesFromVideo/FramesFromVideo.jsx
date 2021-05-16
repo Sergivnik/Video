@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./FramesFromVideo.sass";
 
 export const FramesFromVideo = (props) => {
   const [src, setSrc] = useState(null);
@@ -7,20 +8,26 @@ export const FramesFromVideo = (props) => {
     let video = e.target;
     video.volume = 0;
     let div = document.getElementById("canvasDiv");
+    let width = video.clientWidth;
+    div.style.width = width + "px";
     let canvas;
-    for (
-      let i = video.duration / 100;
-      i <= video.duration;
-      i = i + (video.duration * 0.98) / 5
-    ) {
+    let step;
+    if (props.option == "6 frames") {
+      step = (video.duration * 0.98) / 5;
+    }
+    if (props.option == "5 sec") {
+      step = 5;
+    }
+    for (let i = video.duration / 100; i <= video.duration; i = i + step) {
       canvas = document.createElement("canvas");
-      canvas.width = "350";
-      canvas.height = "250";
+      canvas.width = width / 6;
+      canvas.height = "100";
+      let imgHeight = (video.videoHeight / video.videoWidth) * canvas.width;
       div.append(canvas);
       let ctx = canvas.getContext("2d");
       video.currentTime = i;
       await video.play();
-      ctx.drawImage(video, 0, 0, 450, 250);
+      ctx.drawImage(video, 0, 0, canvas.width, imgHeight);
     }
     video.volume = 1;
   };
@@ -29,7 +36,7 @@ export const FramesFromVideo = (props) => {
       let src = URL.createObjectURL(props.blob);
       setSrc(src);
     }
-  },[props]);
+  }, [props]);
 
   return (
     <div>
